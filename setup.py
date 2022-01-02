@@ -20,10 +20,11 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Operating System :: OS Independent",
     "Development Status :: 3 - Alpha",
-    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Libraries",
 ]
 
-keywords = []
+keywords = ["correlation", "statistics"]
 
 project_urls = {
     "Website": "https://github.com/jettify/xicorrelation",
@@ -38,7 +39,7 @@ use_scm_version = {
 
 
 setup(
-    name="torch-optimizer",
+    name="xicorrelation",
     description=("xicorrelation"),
     long_description="\n\n".join((_read("README.rst"), _read("CHANGES.rst"))),
     long_description_content_type="text/x-rst",
