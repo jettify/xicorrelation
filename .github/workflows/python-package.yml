@@ -42,7 +42,9 @@ jobs:
     - name: Test
       run: |
         make cov
-        codecov
+
+    - name: Upload Coverage to Codecov
+      uses: codecov/codecov-action@v2
 
   deploy:
     name: Deploy
