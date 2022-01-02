@@ -21,9 +21,9 @@ xicorrelation
 It is based off the R code mentioned in the paper: https://statweb.stanford.edu/~souravc/xi.R and
 R package https://github.com/cran/XICOR
 
-+-----------------------------------------------------------------------------------------+
-| https://github.com/jettify/xicorrelation/blob/master/docs/anscombe.png                  |
-+-----------------------------------------------------------------------------------------+
++-----------------------------------------------------------------------------------------------+
+| .. image:: https://raw.githubusercontent.com/jettify/xicorrelation/master/docs/anscombe.png   |
++-----------------------------------------------------------------------------------------------+
 
 
 Simple example
