@@ -10,7 +10,7 @@ __all__ = ("xicorr", "XiCorrResult")
 __version__ = _version
 
 
-class XiCorr(NamedTuple):
+class _XiCorr(NamedTuple):
     xi: float
     fr: npt.NDArray[np.float64]
     cu: float
@@ -18,11 +18,10 @@ class XiCorr(NamedTuple):
 
 class XiCorrResult(NamedTuple):
     correlation: float
-    sd: Optional[float]
     pvalue: Optional[float]
 
 
-def _xicorr(x: npt.NDArray, y: npt.NDArray) -> XiCorr:
+def _xicorr(x: npt.NDArray[np.float_], y: npt.NDArray[np.float_]) -> _XiCorr:
     # Ported from original R implementation.
     # https://github.com/cran/XICOR/blob/master/R/calculateXI.R
     n = x.size
@@ -32,14 +31,13 @@ def _xicorr(x: npt.NDArray, y: npt.NDArray) -> XiCorr:
     cu = np.mean(gr * (1 - gr))
     A1 = np.abs(np.diff(fr[np.argsort(PI, kind="quicksort")])).sum() / (2 * n)
     xi = 1.0 - A1 / cu
-    return XiCorr(xi, fr, cu)
+    return _XiCorr(xi, fr, cu)
 
 
-def xicorr(x: npt.ArrayLike, y: npt.ArrayLike, ties=True) -> XiCorrResult:
-    """
-    Compute the cross rank increment correlation coefficient xi.
-    This function computes the xi coefficient between two vectors x and y.
-
+def xicorr(
+    x: npt.ArrayLike, y: npt.ArrayLike, ties: bool = True
+) -> XiCorrResult:
+    """Compute the cross rank increment correlation coefficient xi [1].
 
     Parameters
     ----------
@@ -64,6 +62,13 @@ def xicorr(x: npt.ArrayLike, y: npt.ArrayLike, ties=True) -> XiCorrResult:
     spearmanr : Calculates a Spearman rank-order correlation coefficient.
 
 
+    Example:
+        >>> from xicorrelation import xicorr
+        >>> x = [1, 2, 3, 4, 5]
+        >>> y = [1, 4, 9, 16, 25]
+        >>> xi, pvalue = xicorr(x, y)
+        >>> print(xi, pvalue)
+
     References
     ----------
     .. [1] Chatterjee, S., "A new coefficient of correlation",
@@ -81,23 +86,28 @@ def xicorr(x: npt.ArrayLike, y: npt.ArrayLike, ties=True) -> XiCorrResult:
     0.2827454599327748
     """
     # https://git.io/JSIlN
-    x = np.asarray(x)
-    y = np.asarray(y)
+    x = np.asarray(x).ravel()
+    y = np.asarray(y).ravel()
 
-    n = x.size
-    if y.size != n:
-        raise ValueError("Both arrays must be of the same size.")
+    if x.size != y.size:
+        raise ValueError(
+            "All inputs to `xicorr` must be of the same "
+            f"size, found x-size {x.size} and y-size {y.size}"
+        )
+    elif not x.size or not y.size:
+        # Return NaN if arrays are empty
+        return XiCorrResult(np.nan, np.nan)
 
     r = _xicorr(x, y)
     xi = r.xi
     fr = r.fr
     CU = r.cu
 
-    sd = None
     pvalue = None
     # https://git.io/JSIlM
+    n = x.size
     if not ties:
-        sd = np.sqrt(2.0 / (5.0 * n))
+        # sd = np.sqrt(2.0 / (5.0 * n))
         pvalue = 1.0 - norm.cdf(np.sqrt(n) * xi / np.sqrt(2.0 / 5.0))
     else:
         qfr = np.sort(fr)
@@ -111,6 +121,6 @@ def xicorr(x: npt.ArrayLike, y: npt.ArrayLike, ties=True) -> XiCorrResult:
         b = np.mean(m ** 2)
         v = (ai - 2.0 * b + ci ** 2) / (CU ** 2)
 
-        sd = np.sqrt(v / n)
+        # sd = np.sqrt(v / n)
         pvalue = 1.0 - norm.cdf(np.sqrt(n) * xi / np.sqrt(v))
-    return XiCorrResult(xi, sd, pvalue)
+    return XiCorrResult(xi, pvalue)

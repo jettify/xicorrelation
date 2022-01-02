@@ -2,8 +2,6 @@ import os
 
 from setuptools import find_packages, setup
 
-install_requires = ["numpy", "scipy"]
-
 
 def _read(f):
     with open(os.path.join(os.path.dirname(__file__), f)) as f_:
@@ -32,12 +30,6 @@ project_urls = {
     "Issues": "https://github.com/jettify/xicorrelation/issues",
 }
 
-use_scm_version = {
-    "write_to": "_version.py",
-    "write_to_template": '__version__ = "{version}"',
-}
-
-
 setup(
     name="xicorrelation",
     description=("xicorrelation"),
@@ -51,7 +43,7 @@ setup(
     download_url="https://pypi.org/project/xicorrelation/",
     license="Apache 2",
     packages=find_packages(exclude=("tests",)),
-    install_requires=install_requires,
+    install_requires=["numpy", "scipy"],
     setup_requires=[
         "setuptools>=45",
         "setuptools_scm",

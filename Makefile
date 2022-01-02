@@ -66,5 +66,6 @@ fmt:
 	isort ${FILES}
 	black -l 79 ${FILES}
 
+ci: lint cov checkbuild
 
 .PHONY: all flake test vtest cov clean doc
