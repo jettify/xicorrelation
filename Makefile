@@ -30,7 +30,7 @@ checkbuild:
 	twine check dist/*
 
 cov cover coverage:
-	pytest -sv -vv --cov=xicorrelation --cov-report=term --cov-report=html ./tests
+	pytest -sv -vv --cov=xicorrelation --cov-report=xml --cov-report=term --cov-report=html ./tests
 	@echo "open file://`pwd`/htmlcov/index.html"
 
 checkfmt:
