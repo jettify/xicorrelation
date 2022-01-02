@@ -10,7 +10,7 @@ __all__ = ("xicorr", "XiCorrResult")
 __version__ = _version
 
 
-class XiCorr(NamedTuple):
+class _XiCorr(NamedTuple):
     xi: float
     fr: npt.NDArray[np.float64]
     cu: float
@@ -21,7 +21,7 @@ class XiCorrResult(NamedTuple):
     pvalue: Optional[float]
 
 
-def _xicorr(x: npt.NDArray, y: npt.NDArray) -> XiCorr:
+def _xicorr(x: npt.NDArray[np.float_], y: npt.NDArray[np.float_]) -> _XiCorr:
     # Ported from original R implementation.
     # https://github.com/cran/XICOR/blob/master/R/calculateXI.R
     n = x.size
@@ -31,14 +31,13 @@ def _xicorr(x: npt.NDArray, y: npt.NDArray) -> XiCorr:
     cu = np.mean(gr * (1 - gr))
     A1 = np.abs(np.diff(fr[np.argsort(PI, kind="quicksort")])).sum() / (2 * n)
     xi = 1.0 - A1 / cu
-    return XiCorr(xi, fr, cu)
+    return _XiCorr(xi, fr, cu)
 
 
-def xicorr(x: npt.ArrayLike, y: npt.ArrayLike, ties=True) -> XiCorrResult:
-    """
-    Compute the cross rank increment correlation coefficient xi.
-    This function computes the xi coefficient between two vectors x and y.
-
+def xicorr(
+    x: npt.ArrayLike, y: npt.ArrayLike, ties: bool = True
+) -> XiCorrResult:
+    """Compute the cross rank increment correlation coefficient xi [1].
 
     Parameters
     ----------
