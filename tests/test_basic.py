@@ -75,4 +75,21 @@ def test_p_val_asymptotic(quartet):
 
 def test_errors():
     with pytest.raises(ValueError):
-        xicorr([1, 2, 3, 4], [5, 6])
+        xicorr([1.0, 2.0, 3.0, 4.0], [5.0, 6.0])
+
+    with pytest.raises(ValueError):
+        xicorr(np.array([1, 2, 3, 4]), np.array([5, 6]))
+
+
+def test_flatten():
+    x = np.array([[1, 2], [3, 4]])
+    y = np.array([[1, 4], [9, 16]])
+    xi, pvalue = xicorr(x, y)
+    assert xi == pytest.approx(0.4)
+    assert pvalue == pytest.approx(0.13362874657719392)
+
+
+def test_empty():
+    xi, pvalue = xicorr([], [], ties=False)
+    assert xi is np.nan
+    assert pvalue is np.nan
