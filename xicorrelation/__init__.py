@@ -6,7 +6,7 @@ from scipy.stats import norm, rankdata
 
 from ._version import version as _version
 
-__all__ = ('xicorr', 'XiCorrResult')
+__all__ = ("xicorr", "XiCorrResult")
 __version__ = _version
 
 

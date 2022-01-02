@@ -35,7 +35,7 @@ cov cover coverage:
 
 checkfmt:
 	isort --check-only --diff $(FILES)
-	black -S -l 79 --check $(FILES)
+	black -l 79 --check $(FILES)
 
 lint: flake checkrst pyroma bandit checkfmt
 
@@ -60,11 +60,11 @@ doc:
 	@echo "open file://`pwd`/docs/_build/html/index.html"
 
 black:
-	black -S -l 79 setup.py xicorrelation/ tests/ examples/
+	black -l 79 $(FILES)
 
 fmt:
 	isort ${FILES}
-	black -S -l 79 ${FILES}
+	black -l 79 ${FILES}
 
 
 .PHONY: all flake test vtest cov clean doc
