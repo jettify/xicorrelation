@@ -1,5 +1,4 @@
 import os
-import re
 
 from setuptools import find_packages, setup
 
@@ -9,19 +8,6 @@ install_requires = ['numpy', 'scipy']
 def _read(f):
     with open(os.path.join(os.path.dirname(__file__), f)) as f_:
         return f_.read().strip()
-
-
-def _read_version():
-    regexp = re.compile(r"^__version__\W*=\W*'([\d.abrc]+)'")
-    init_py = os.path.join(
-        os.path.dirname(__file__), 'xicorrelation', '__init__.py'
-    )
-    with open(init_py) as f:
-        for line in f:
-            match = regexp.match(line)
-            if match is not None:
-                return match.group(1)
-        raise RuntimeError('Cannot find version in xicorrelation/__init__.py')
 
 
 classifiers = [
@@ -45,10 +31,14 @@ project_urls = {
     'Issues': 'https://github.com/jettify/xicorrelation/issues',
 }
 
+use_scm_version = {
+    'write_to': '_version.py',
+    'write_to_template': '__version__ = "{version}"',
+}
+
 
 setup(
     name='torch-optimizer',
-    version=_read_version(),
     description=('xicorrelation'),
     long_description='\n\n'.join((_read('README.rst'), _read('CHANGES.rst'))),
     long_description_content_type='text/x-rst',
@@ -61,9 +51,16 @@ setup(
     license='Apache 2',
     packages=find_packages(exclude=('tests',)),
     install_requires=install_requires,
+    setup_requires=[
+        "setuptools>=45",
+        "setuptools_scm",
+        "setuptools_scm_git_archive",
+        "wheel",
+    ],
     keywords=keywords,
     zip_safe=True,
     include_package_data=True,
     project_urls=project_urls,
     python_requires='>=3.6.0',
+    use_scm_version=True,
 )

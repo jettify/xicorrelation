@@ -1,12 +1,13 @@
-import numpy as np
-import numpy.typing as npt
-
-from scipy.stats import rankdata, norm
 from typing import NamedTuple, Optional
 
+import numpy as np
+import numpy.typing as npt
+from scipy.stats import norm, rankdata
+
+from ._version import version as _version
 
 __all__ = ('xicorr', 'XiCorrResult')
-__version__ = '0.0.1a0'
+__version__ = _version
 
 
 class XiCorr(NamedTuple):
@@ -25,7 +26,6 @@ def _xicorr(x: npt.NDArray, y: npt.NDArray) -> XiCorr:
     # Ported from original R implementation.
     # https://github.com/cran/XICOR/blob/master/R/calculateXI.R
     n = x.size
-    assert y.size == n, "arrays must be of the same size"
     PI = rankdata(x, method="average")
     fr = rankdata(y, method="average") / n
     gr = rankdata(-y, method="average") / n
