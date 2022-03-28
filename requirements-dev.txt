@@ -5,7 +5,7 @@ flake8-bugbear==21.11.29
 flake8==4.0.1
 ipdb==0.13.9
 isort==5.10.1
-mypy==0.930
+mypy==0.942
 numpy==1.22.0
 pyroma==3.2
 pytest-cov==3.0.0
