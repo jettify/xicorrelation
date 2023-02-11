@@ -33,8 +33,8 @@ for ax, (label, (x, y)) in zip(axs.flat, datasets.items()):
     p1, p0 = np.polyfit(x, y, deg=1)  # slope, intercept
     ax.axline(xy1=(0, p0), slope=p1, color="r", lw=2)
 
-    pr = pearsonr(x, y)[0]
-    sr = spearmanr(x, y).correlation
+    pr = pearsonr(x, y).statistic
+    sr = spearmanr(x, y).statistic
     kt = kendalltau(x, y).correlation
     xi = xicorr(x, y).correlation
 
@@ -44,7 +44,7 @@ for ax, (label, (x, y)) in zip(axs.flat, datasets.items()):
         f"$\\sigma$ = {np.std(y):.2f}\n"
         # correlations
         f"Pearson $r$ = {pr:.4f}\n"
-        f"Spearmanr $r$ = {pr:.4f}\n"
+        f"Spearmanr $r$ = {sr:.4f}\n"
         f"Kendall $tau$ = {kt:.4f}\n"
         f"Chatterjee $xi$ = {xi:.4f}"
     )
