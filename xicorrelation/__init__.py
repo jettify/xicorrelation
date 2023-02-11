@@ -103,7 +103,7 @@ def xicorr(
     fr = r.fr
     CU = r.cu
 
-    pvalue = None
+    pvalue: Optional[float] = None
     # https://git.io/JSIlM
     n = x.size
     if not ties:
@@ -118,8 +118,8 @@ def xicorr(
         ci = np.mean(ind2 * qfr) / n
         cq = np.cumsum(qfr)
         m = (cq + (n - ind) * qfr) / n
-        b = np.mean(m ** 2)
-        v = (ai - 2.0 * b + ci ** 2) / (CU ** 2)
+        b = np.mean(m**2)
+        v = (ai - 2.0 * b + ci**2) / (CU**2)
 
         # sd = np.sqrt(v / n)
         pvalue = 1.0 - norm.cdf(np.sqrt(n) * xi / np.sqrt(v))

@@ -34,23 +34,23 @@ def test_xi_correlations(quartet):
     q = quartet
 
     assert xicorr(q["x_1"], q["y_1"]).correlation == pytest.approx(
-        0.275, rel=10 ** -6
+        0.275, rel=10**-6
     )
     assert xicorr(q["x_2"], q["y_2"]).correlation == pytest.approx(
-        0.6, rel=10 ** -6
+        0.6, rel=10**-6
     )
     assert xicorr(q["x_3"], q["y_3"]).correlation == pytest.approx(
-        0.6666666666666667, rel=10 ** -6
+        0.6666666666666667, rel=10**-6
     )
     assert xicorr(q["x_4"], q["y_4"]).correlation == pytest.approx(
-        0.175, rel=10 ** -6
+        0.175, rel=10**-6
     )
 
 
 def test_xi_correlations_no_ties(quartet):
     q = quartet
     x = xicorr(q["x_1"], q["y_1"], ties=False)
-    assert x.correlation == pytest.approx(0.275, rel=10 ** -6)
+    assert x.correlation == pytest.approx(0.275, rel=10**-6)
 
 
 def test_p_val_asymptotic(quartet):
